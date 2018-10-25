@@ -15,6 +15,13 @@ class Tank:
 
     def calc(self, fluids, output):
         for fluid in fluids:
-            self.Ca = (self.V * self.Ca + fluid.Q * fluid.Ca) / (self.V + fluid.Q)
+            if self.V + fluid.Q + output.Q > self.A * self.H:
+                self.V -= fluid.Q
+            else:
+                self.Ca = (self.V * self.Ca + fluid.Q * fluid.Ca) / (self.V + fluid.Q)
             self.V += fluid.Q
-        self.V += output.Q
+        if self.V + output.Q > 0:
+            self.V += output.Q
+        else:
+            self.V = 0
+            self.Ca = 0
