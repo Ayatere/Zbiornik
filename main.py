@@ -2,19 +2,30 @@ from tank import Tank
 from fluid import Fluid
 from output import Output
 import time
-import msvcrt
+import matplotlib.pyplot as plt
 
-tank = Tank(1000, 10, 500, 0.5)
-fluids = [Fluid(190, 0.7), Fluid(10, 0.1)]
-output = Output(-150)
+tank = Tank(10000, 10, 500, 0.5)
+fluids = [Fluid(60, 0.5), Fluid(250, 0.2)]
+output = Output(-200)
 dTime = time.time()
-while True:
-    if msvcrt.kbhit():
-        print(ord(msvcrt.getch()))
-        if ord(msvcrt.getch()) == 27:
-            break
-    if time.time() - dTime > 0.1:
-        dTime = time.time()
-        tank.calc(fluids, output)
-        print(tank.V, tank.Ca)
-    time.sleep(0.01)
+
+dataV = []
+dataCa = []
+iterations = 100
+for x in range(iterations):
+    tank.calc(fluids, output)
+    dataV.append(tank.V)
+    dataCa.append(tank.Ca)
+
+plt.figure(1, figsize=(8, 3))
+plt.grid(True)
+plt.subplot(121)
+plt.xlabel('Time')
+plt.ylabel('Volume')
+plt.plot(range(iterations), dataV, 'r')
+plt.subplot(122)
+plt.xlabel('Time')
+plt.ylabel('Concentration of alcohol')
+plt.plot(range(iterations), dataCa, 'b--')
+plt.suptitle('Categorical Plotting')
+plt.show()

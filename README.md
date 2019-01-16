@@ -1,2 +1,0 @@
-# Zbiornik
-School project
